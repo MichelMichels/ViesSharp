@@ -24,7 +24,7 @@
   <h3 align="center">VatSharp</h3>
 
   <p align="center">
-    A C# client to facilitate the validation of VAT data through [VIES (Vat Information Exchange System)](https://ec.europa.eu/taxation_customs/vies/#/vat-validation).
+    A C# client to facilitate the validation of VAT data through <a href="https://ec.europa.eu/taxation_customs/vies/#/vat-validation">VIES (Vat Information Exchange System)</a>.
     <br />
     <a href="https://github.com/MichelMichels/VatSharp"><strong>Explore the docs »</strong></a>
     <br />
