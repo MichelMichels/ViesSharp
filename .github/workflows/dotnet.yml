@@ -25,15 +25,19 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+
       - name: Restore dependencies
         run: dotnet restore
+
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build --configuration Release --no-restore /property:WarningLevel=0
+
       - name: Test
         run: dotnet test --verbosity m --no-restore /property:WarningLevel=0 --logger:trx
+
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
           files: |
-            src\**\TestResults\*.trx
+            *.trx
