@@ -40,4 +40,4 @@ jobs:
         if: always()
         with:
           files: |
-            TestResults/*.trx
+            /home/runner/work/ViesSharp/ViesSharp/src/MichelMichels.ViesSharpTests/TestResults/*.trx
