@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>ViesSharp</Title>
+    <Authors>Michel Michels</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>
+      - Release 1.0.0
+    </PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/MichelMichels/ViesSharp</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/MichelMichels/ViesSharp</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>vies vat validation vatnumber europe</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath=""/>
+  </ItemGroup>
+</Project>
