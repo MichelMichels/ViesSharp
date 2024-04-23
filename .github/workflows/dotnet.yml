@@ -32,7 +32,7 @@ jobs:
       - name: Test
         run: dotnet test --verbosity m --no-restore /property:WarningLevel=0 --logger:trx
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action/windows@v2
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
           files: |
