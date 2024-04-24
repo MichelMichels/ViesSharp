@@ -1,4 +1,5 @@
-# 🛂 ViesSharp
+<!-- omit in toc -->
+# ViesSharp 🛂 
 
 [![NuGet Version](https://img.shields.io/nuget/v/MichelMichels.ViesSharp)](https://www.nuget.org/packages/MichelMichels.ViesSharp)
 [![.NET](https://github.com/MichelMichels/ViesSharp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/MichelMichels/ViesSharp/actions/workflows/dotnet.yml)
@@ -8,17 +9,16 @@ This projects is a C# wrapper library to [validate VAT numbers with VIES]("https
 <details>
 <summary>Table of Contents</summary>
 
-- [🛂 ViesSharp](#-viessharp)
-  - [Prerequisites](#prerequisites)
-  - [Building](#building)
-  - [Installation](#installation)
-  - [Getting started](#getting-started)
-  - [Usage](#usage)
-    - [Check VAT number](#check-vat-number)
-    - [Check VAT test service](#check-vat-test-service)
-    - [Check status](#check-status)
-    - [Exceptions](#exceptions)
-  - [Credits](#credits)
+- [Prerequisites](#prerequisites)
+- [Building](#building)
+- [Installation](#installation)
+- [Getting started](#getting-started)
+- [Usage](#usage)
+  - [Check VAT number](#check-vat-number)
+  - [Check VAT test service](#check-vat-test-service)
+  - [Check status](#check-status)
+  - [Exceptions](#exceptions)
+- [Credits](#credits)
 
 </details>
 
