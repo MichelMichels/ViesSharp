@@ -1,0 +1,167 @@
+﻿@page "/"
+
+@rendermode InteractiveServer
+
+@using System.Diagnostics
+@using MichelMichels.ViesSharp;
+@using MichelMichels.ViesSharp.Exceptions
+@using MichelMichels.ViesSharp.Models
+@using System.Text.Json
+
+@inject IViesSharpClient viesSharpClient;
+
+<PageTitle>ViesSharp | Demo</PageTitle>
+<div>
+    <div class="container p-4 ">
+        <div class="row g-4">
+            <div class="col-12">
+                <h1 class="display-1">ViesSharp</h1>
+                <p class="m-0">By <a href="http://michel.miche.ls">Michel Michels</a></p>
+            </div>
+
+            <div class="col-12 d-flex">
+                <form class="flex-fill align-self-center">
+                    <h2 class="mb-3">Search</h2>
+
+                    <div class="input-group d-none d-md-flex">
+                        <select class="form-select" style="max-width: 7rem;" @bind="@SelectedCountryCode">
+                            <option value="" selected>Country</option>
+                            @foreach (string countryCode in CountryCodes)
+                            {
+                                <option value="@countryCode">@countryCode</option>
+                            }
+                        </select>
+
+                        <input type="text" class="form-control" placeholder="VAT no." @bind="@VatNumber" />
+
+                        <button class="btn btn-outline-primary @(string.IsNullOrEmpty(SelectedCountryCode) ? "disabled" : "" )" type="button" @onclick="Lookup">Lookup</button>
+                    </div>
+
+                    <div class="vstack gap-3 d-md-none">
+                        <select class="form-select" style="max-width: 7rem;" @bind="@SelectedCountryCode">
+                            <option value="" selected>Country</option>
+                            @foreach (string countryCode in CountryCodes)
+                            {
+                                <option value="@countryCode">@countryCode</option>
+                            }
+                        </select>
+
+                        <input type="text" class="form-control" placeholder="VAT no." @bind="@VatNumber" />
+
+                        <button class="btn btn-outline-primary @(string.IsNullOrEmpty(SelectedCountryCode) ? "disabled" : "" )" type="button" @onclick="Lookup">Lookup</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Result -->
+            <div class="col-12">
+                <h2>Result</h2>
+
+                @if(LastResponse is not null)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <i class="@(LastResponse.IsValid ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger") d-block text-center mb-2" style="font-size: 4rem;"></i>
+
+                            <h3>@LastResponse.Name</h3>
+                            <p>@LastResponse.Address</p>
+
+                            <a data-bs-toggle="collapse" href="#collapse-json" role="button" aria-expanded="false" aria-controls="collapse-json">
+                                See json
+                            </a>
+                            <div class="collapse" id="collapse-json">
+                                <pre>
+                                    @Json
+                                </pre>
+                            </div>
+
+                        </div>
+                    </div>
+                } else
+                {
+                    <div class="pa-4">
+                        <i class="bi-search text-center d-block" style="font-size: 4rem; color:gray;" />
+                        <p style="color:gray;" class="text-center">Lookup a VAT number!</p>
+                    </div>
+                }
+
+            </div>
+
+            <!-- History -->
+            <div class="col-12 @(History.Count == 0 ? "d-none" : "")">
+                <h2>History</h2>
+
+                <div class="accordion" id="accordion-history">                    
+
+                    @for (int i = 0; i < History.Count; i++)
+                    {
+                        VatNumberResponse response = History[i];
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@(i)" aria-expanded="true" aria-controls="collapse-@(i)">
+                                    @(response.Name)
+                                </button>
+                            </h2>
+                            <div id="collapse-@(i)" class="accordion-collapse collapse show" data-bs-parent="#accordion-history">
+                                <div class="accordion-body">
+                                    <pre>
+                                        @(JsonSerializer.Serialize(response, defaultSerializerOptions))
+                                    </pre>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@code 
+{
+    private JsonSerializerOptions defaultSerializerOptions = new()
+    {
+        WriteIndented = true,
+    };
+
+    public string? VatNumber { get; set; }
+    public string Json { get; set; } = string.Empty;
+    public string SelectedCountryCode { get; set; } = string.Empty;
+    public bool IsLookupEnabled => !string.IsNullOrEmpty(SelectedCountryCode);
+    public List<string> CountryCodes = [];
+    public VatNumberResponse? LastResponse { get; set; }
+    public List<VatNumberResponse> History = [];
+    public string BackgroundClass { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        StatusResponse statusResponse = await viesSharpClient.CheckStatus();
+        CountryCodes = statusResponse.Countries.Select(x => x.CountryCode).ToList();
+    }
+
+    public async Task Lookup()
+    {
+        VatNumberRequest request = new()
+        {
+            CountryCode = SelectedCountryCode,
+            VatNumber = VatNumber ?? string.Empty,
+        };
+
+        try
+        {
+            if(LastResponse is not null)
+            {
+                History.Add(LastResponse);
+            }
+
+            LastResponse = await viesSharpClient.CheckVatNumber(request);
+            BackgroundClass = LastResponse.IsValid ? "bg-success" : "bg-danger";
+            Json = JsonSerializer.Serialize(LastResponse, defaultSerializerOptions);
+        } catch(ViesSharpException ex)
+        {
+            Json = JsonSerializer.Serialize(ex.ErrorResponse, defaultSerializerOptions);
+        }
+    }
+}
