@@ -11,21 +11,46 @@
 @inject IViesSharpClient viesSharpClient;
 
 <PageTitle>ViesSharp | Demo</PageTitle>
+
 <div>
+    <header class="p-4 pb-3 d-flex align-items-center">
+        <div class="me-auto">
+            <h1 class="m-0 fw-bold lh-1">Michel</h1>
+            <h1 class="m-0 fw-bold lh-1">Michels</h1>
+        </div>
+        
+        <div class="p-2">
+            <a href="https://github.com/MichelMichels" class="btn btn-outline-secondary" role="button">
+                <div class="hstack gap-2">
+                    <i class="bi-github" />
+                    <span>Profile</span>
+                </div>                
+            </a>
+        </div>
+    </header>
+
+    <div class="wavy-line bg-secondary"></div>
+
     <div class="container p-4 ">
         <div class="row g-4">
-            <div class="col-12">
-                <h1 class="display-1">ViesSharp</h1>
-                <p class="m-0">By <a href="http://michel.miche.ls">Michel Michels</a></p>
+            <div class="col-12 d-flex align-items-center gap-3">
+                <h2 class="display-2">ViesSharp</h2>
+
+                <a href="https://github.com/MichelMichels/ViesSharp" class="btn btn-primary" role="button">
+                    <div class="hstack gap-2">
+                        <i class="bi-github" />
+                        <span>Repository</span>
+                    </div>
+                </a>
             </div>
 
             <div class="col-12 d-flex">
                 <form class="flex-fill align-self-center">
-                    <h2 class="mb-3">Search</h2>
+                    <h3 class="mb-3">Search</h3>
 
                     <div class="input-group d-none d-md-flex">
                         <select class="form-select" style="max-width: 7rem;" @bind="@SelectedCountryCode">
-                            <option value="" selected>Country</option>
+                            <option disabled value="" selected>Country</option>
                             @foreach (string countryCode in CountryCodes)
                             {
                                 <option value="@countryCode">@countryCode</option>
@@ -34,7 +59,12 @@
 
                         <input type="text" class="form-control" placeholder="VAT no." @bind="@VatNumber" />
 
-                        <button class="btn btn-outline-primary @(string.IsNullOrEmpty(SelectedCountryCode) ? "disabled" : "" )" type="button" @onclick="Lookup">Lookup</button>
+                        <button class="btn btn-outline-primary @(string.IsNullOrEmpty(SelectedCountryCode) ? "disabled" : "" )" type="button" @onclick="Lookup">
+                            <span class="@(IsLookingUp ? "d-none" : "")">Lookup</span>
+                            <div class="spinner-border spinner-border-sm @(!IsLookingUp ? "d-none" : "")" role="status">
+                                <span class="visually-hidden">Looking up...</span>
+                            </div>
+                        </button>
                     </div>
 
                     <div class="vstack gap-3 d-md-none">
@@ -48,14 +78,21 @@
 
                         <input type="text" class="form-control" placeholder="VAT no." @bind="@VatNumber" />
 
-                        <button class="btn btn-outline-primary @(string.IsNullOrEmpty(SelectedCountryCode) ? "disabled" : "" )" type="button" @onclick="Lookup">Lookup</button>
+                        <div class="d-grid col-8 mx-auto">
+                            <button class="btn btn-primary  @(string.IsNullOrEmpty(SelectedCountryCode) ? "disabled" : "")" type="button" @onclick="Lookup">                                
+                                <span class="@(IsLookingUp ? "d-none" : "")">Lookup</span>
+                                <div class="spinner-border spinner-border-sm @(!IsLookingUp ? "d-none" : "")" role="status">
+                                    <span class="visually-hidden">Looking up...</span>
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
 
             <!-- Result -->
             <div class="col-12">
-                <h2>Result</h2>
+                <h3>Result</h3>
 
                 @if(LastResponse is not null)
                 {
@@ -63,16 +100,18 @@
                         <div class="card-body">
                             <i class="@(LastResponse.IsValid ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger") d-block text-center mb-2" style="font-size: 4rem;"></i>
 
-                            <h3>@LastResponse.Name</h3>
-                            <p>@LastResponse.Address</p>
+                            @if(LastResponse.IsValid) {
+                                <h3>@LastResponse.Name</h3>
+                                <p>@LastResponse.Address</p>
+                            } else {
+                                <h3 class="text-center">This is not a valid VAT number.</h3>
+                            }
 
                             <a data-bs-toggle="collapse" href="#collapse-json" role="button" aria-expanded="false" aria-controls="collapse-json">
                                 See json
                             </a>
                             <div class="collapse" id="collapse-json">
-                                <pre>
-                                    @Json
-                                </pre>
+                                <pre><code>@(JsonSerializer.Serialize(LastResponse, defaultSerializerOptions))</code></pre>
                             </div>
 
                         </div>
@@ -89,7 +128,7 @@
 
             <!-- History -->
             <div class="col-12 @(History.Count == 0 ? "d-none" : "")">
-                <h2>History</h2>
+                <h3>History</h3>
 
                 <div class="accordion" id="accordion-history">                    
 
@@ -105,9 +144,7 @@
                             </h2>
                             <div id="collapse-@(i)" class="accordion-collapse collapse show" data-bs-parent="#accordion-history">
                                 <div class="accordion-body">
-                                    <pre>
-                                        @(JsonSerializer.Serialize(response, defaultSerializerOptions))
-                                    </pre>
+                                    <pre><code>@(JsonSerializer.Serialize(response, defaultSerializerOptions))</code></pre>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +163,7 @@
         WriteIndented = true,
     };
 
-    public string? VatNumber { get; set; }
+    public string VatNumber { get; set; } = string.Empty;
     public string Json { get; set; } = string.Empty;
     public string SelectedCountryCode { get; set; } = string.Empty;
     public bool IsLookupEnabled => !string.IsNullOrEmpty(SelectedCountryCode);
@@ -134,6 +171,7 @@
     public VatNumberResponse? LastResponse { get; set; }
     public List<VatNumberResponse> History = [];
     public string BackgroundClass { get; set; } = string.Empty;
+    public bool IsLookingUp { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -143,10 +181,17 @@
 
     public async Task Lookup()
     {
+        if(IsLookingUp) 
+        {
+            return;
+        }
+
+        IsLookingUp = true;
+
         VatNumberRequest request = new()
         {
             CountryCode = SelectedCountryCode,
-            VatNumber = VatNumber ?? string.Empty,
+            VatNumber = ExtractDigits(VatNumber),
         };
 
         try
@@ -163,5 +208,12 @@
         {
             Json = JsonSerializer.Serialize(ex.ErrorResponse, defaultSerializerOptions);
         }
+
+        IsLookingUp = false;
+    }
+
+    private string ExtractDigits(string value) 
+    {
+        return string.Join("", value.Where(x => char.IsDigit(x)));
     }
 }
