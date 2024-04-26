@@ -2,6 +2,14 @@ body {
     overflow-y: scroll;
 }
 
+h1, h2, h3 {
+    font-family: 'Montserrat', 'sans-serif';
+}
+
+a {
+    text-decoration: none;
+}
+
 .wavy-line {
     --s: 8px; /* size of the wave */
     --b: 2px; /* thickness of the line */

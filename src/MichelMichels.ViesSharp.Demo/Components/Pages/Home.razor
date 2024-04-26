@@ -13,33 +13,15 @@
 <PageTitle>ViesSharp | Demo</PageTitle>
 
 <div>
-    <header class="p-4 pb-3 d-flex align-items-center">
-        <div class="me-auto">
-            <h1 class="m-0 fw-bold lh-1">Michel</h1>
-            <h1 class="m-0 fw-bold lh-1">Michels</h1>
-        </div>
-        
-        <div class="p-2">
-            <a href="https://github.com/MichelMichels" class="btn btn-outline-secondary" role="button">
-                <div class="hstack gap-2">
-                    <i class="bi-github" />
-                    <span>Profile</span>
-                </div>                
-            </a>
-        </div>
-    </header>
-
-    <div class="wavy-line bg-secondary"></div>
-
     <div class="container p-4 ">
         <div class="row g-4">
             <div class="col-12 d-flex align-items-center gap-3">
                 <h2 class="display-2">ViesSharp</h2>
 
-                <a href="https://github.com/MichelMichels/ViesSharp" class="btn btn-primary" role="button">
+                <a href="https://github.com/MichelMichels/ViesSharp" class="btn btn-outline-primary" role="button">
                     <div class="hstack gap-2">
                         <i class="bi-github" />
-                        <span>Repository</span>
+                        <span class="d-none d-sm-block">Repository</span>
                     </div>
                 </a>
             </div>
@@ -78,7 +60,7 @@
 
                         <input type="text" class="form-control" placeholder="VAT no." @bind="@VatNumber" />
 
-                        <div class="d-grid col-8 mx-auto">
+                        <div class="d-grid">
                             <button class="btn btn-primary  @(string.IsNullOrEmpty(SelectedCountryCode) ? "disabled" : "")" type="button" @onclick="Lookup">                                
                                 <span class="@(IsLookingUp ? "d-none" : "")">Lookup</span>
                                 <div class="spinner-border spinner-border-sm @(!IsLookingUp ? "d-none" : "")" role="status">
