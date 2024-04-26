@@ -6,11 +6,35 @@
 @using MichelMichels.ViesSharp;
 @using MichelMichels.ViesSharp.Exceptions
 @using MichelMichels.ViesSharp.Models
+@using MichelMichels.ViesSharp.Demo.Services
 @using System.Text.Json
 
 @inject IViesSharpClient viesSharpClient;
+@inject IThemeService themeService;
 
 <PageTitle>ViesSharp | Demo</PageTitle>
+
+<header class="p-4 pb-3 d-flex align-items-center">
+    <div class="me-auto">
+        <h1 class="m-0 fw-bold lh-1">Michel</h1>
+        <h1 class="m-0 fw-bold lh-1">Michels</h1>
+    </div>
+
+    <div class="p-2 hstack gap-2">
+        <a href="https://github.com/MichelMichels" class="btn btn-outline-secondary" role="button">
+            <div class="hstack gap-2">
+                <i class="bi-github" />
+                <span>Profile</span>
+            </div>
+        </a>
+
+        <button class="btn btn-outline-secondary" @onclick="@ToggleDarkTheme">
+            <i class="@(themeService.IsDarkMode ? "bi-brightness-high" : "bi-moon-stars" )" />
+        </button>
+    </div>
+</header>
+
+<div class="wavy-line bg-secondary"></div>
 
 <div>
     <div class="container p-4 ">
@@ -154,6 +178,7 @@
     public List<VatNumberResponse> History = [];
     public string BackgroundClass { get; set; } = string.Empty;
     public bool IsLookingUp { get; set; }
+    public bool IsDarkMode { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -197,5 +222,12 @@
     private string ExtractDigits(string value) 
     {
         return string.Join("", value.Where(x => char.IsDigit(x)));
+    }
+
+    public void ToggleDarkTheme()
+    {
+        themeService.ToggleMode();
+        //IsDarkMode = ThemeService.IsDarkMode;        
+        StateHasChanged();
     }
 }

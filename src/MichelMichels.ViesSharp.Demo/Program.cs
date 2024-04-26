@@ -1,9 +1,12 @@
 using MichelMichels.ViesSharp;
 using MichelMichels.ViesSharp.Demo.Components;
+using MichelMichels.ViesSharp.Demo.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IViesSharpClient, ViesSharpClient>();
+builder.Services
+    .AddSingleton<IViesSharpClient, ViesSharpClient>()
+    .AddSingleton<IThemeService, ThemeService>();
 
 // Add services to the container.
 builder.Services

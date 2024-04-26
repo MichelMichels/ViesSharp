@@ -1,5 +1,11 @@
-﻿<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+﻿@using MichelMichels.ViesSharp.Demo.Services;
+
+@rendermode InteractiveAuto
+
+@inject IThemeService themeService;
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="@(themeService.IsDarkMode ? "dark" : "light")">
 
 <head>
     <meta charset="utf-8" />
