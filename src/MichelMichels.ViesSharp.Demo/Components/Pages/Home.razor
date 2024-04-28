@@ -9,9 +9,6 @@
 @using MichelMichels.ViesSharp.Demo.Services
 @using System.Text.Json
 
-@inject IViesSharpClient viesSharpClient;
-@inject IThemeService themeService;
-
 <PageTitle>ViesSharp | Demo</PageTitle>
 
 <header class="p-4 pb-3 d-flex align-items-center" data-bs-theme="dark">
@@ -103,8 +100,8 @@
                             <i class="@(LastResponse.IsValid ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger") d-block text-center mb-2" style="font-size: 4rem;"></i>
 
                             @if(LastResponse.IsValid) {
-                                <h4 class="text-center">@LastResponse.Name</h4>
-                                <p class="text-center">@LastResponse.Address</p>
+                                <h4 class="text-center">@ParsedCompanyName</h4>
+                                <p class="text-center">@ParsedAddress</p>
                             } else {
                                 <h3 class="text-center">This is not a valid VAT number.</h3>
                             }
@@ -157,66 +154,3 @@
     </div>
 
 </div>
-
-@code 
-{
-    private JsonSerializerOptions defaultSerializerOptions = new()
-    {
-        WriteIndented = true,
-    };
-
-    public string VatNumber { get; set; } = string.Empty;
-    public string Json { get; set; } = string.Empty;
-    public string SelectedCountryCode { get; set; } = string.Empty;
-    public bool IsLookupEnabled => !string.IsNullOrEmpty(SelectedCountryCode);
-    public List<string> CountryCodes = [];
-    public VatNumberResponse? LastResponse { get; set; }
-    public List<VatNumberResponse> History = [];
-    public string BackgroundClass { get; set; } = string.Empty;
-    public bool IsLookingUp { get; set; }
-    public bool IsDarkMode { get; set; } = true;
-
-    protected override async Task OnInitializedAsync()
-    {
-        StatusResponse statusResponse = await viesSharpClient.CheckStatus();
-        CountryCodes = statusResponse.Countries.Select(x => x.CountryCode).ToList();
-    }
-
-    public async Task Lookup()
-    {
-        if(IsLookingUp) 
-        {
-            return;
-        }
-
-        IsLookingUp = true;
-
-        VatNumberRequest request = new()
-        {
-            CountryCode = SelectedCountryCode,
-            VatNumber = ExtractDigits(VatNumber),
-        };
-
-        try
-        {
-            if(LastResponse is not null)
-            {
-                History.Add(LastResponse);
-            }
-
-            LastResponse = await viesSharpClient.CheckVatNumber(request);
-            BackgroundClass = LastResponse.IsValid ? "bg-success" : "bg-danger";
-            Json = JsonSerializer.Serialize(LastResponse, defaultSerializerOptions);
-        } catch(ViesSharpException ex)
-        {
-            Json = JsonSerializer.Serialize(ex.ErrorResponse, defaultSerializerOptions);
-        }
-
-        IsLookingUp = false;
-    }
-
-    private string ExtractDigits(string value) 
-    {
-        return string.Join("", value.Where(x => char.IsDigit(x)));
-    }
-}
