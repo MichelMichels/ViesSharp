@@ -48,15 +48,21 @@
                     <h3 class="mb-3">Search</h3>
 
                     <div class="d-flex flex-column flex-md-row gap-2">
-                        <select class="form-select" style="max-width: 7rem;" @bind="@SelectedCountryCode">
-                            <option disabled value="" selected>Country</option>
-                            @foreach (string countryCode in CountryCodes)
-                            {
-                                <option value="@countryCode">@countryCode</option>
-                            }
-                        </select>
+                        <div class="form-floating" style="width: 7rem;">
+                            <select class="form-select" id="country-select" placeholder="Country placeholder" @bind="@SelectedCountryCode">
+                                <option disabled value="" selected>...</option>
+                                @foreach (string countryCode in CountryCodes)
+                                {
+                                    <option value="@countryCode">@countryCode</option>
+                                }
+                            </select>
+                            <label for="country-select">Country</label>
+                        </div>
 
-                        <input type="text" class="form-control" placeholder="VAT no." @bind="@VatNumber" />
+                        <div class="form-floating flex-grow-1">
+                            <input type="text" class="form-control" id="vatnumber-input" placeholder="VAT no. placeholder" @bind="@VatNumber">
+                            <label for="vatnumber-input">VAT no.</label>
+                        </div>
 
                         <button class="btn btn-primary @(string.IsNullOrEmpty(SelectedCountryCode) ? "disabled" : "" )" type="submit">
                             <span class="@(IsLookingUp ? "d-none" : "")">Lookup</span>
