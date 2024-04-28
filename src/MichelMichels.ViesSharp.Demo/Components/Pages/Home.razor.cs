@@ -8,7 +8,7 @@ namespace MichelMichels.ViesSharp.Demo.Components.Pages;
 public partial class Home : ComponentBase
 {
     [Inject]
-    public IViesSharpClient ViesSharpClient { get; set; }
+    protected IViesSharpClient ViesSharpClient { get; set; } = default!;
 
     private readonly JsonSerializerOptions defaultSerializerOptions = new()
     {
@@ -24,7 +24,6 @@ public partial class Home : ComponentBase
     public List<VatNumberResponse> History = [];
     public string BackgroundClass { get; set; } = string.Empty;
     public bool IsLookingUp { get; set; }
-
     public string ParsedCompanyName { get; set; } = string.Empty;
     public string ParsedAddress { get; set; } = string.Empty;
 
@@ -75,9 +74,8 @@ public partial class Home : ComponentBase
         ParsedCompanyName = response.Name;
         ParsedAddress = response.Address.Replace("\n", ", ");
     }
-    private string ExtractDigits(string value)
+    private static string ExtractDigits(string value)
     {
         return string.Join("", value.Where(x => char.IsDigit(x)));
     }
-
 }
