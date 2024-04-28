@@ -2,7 +2,8 @@
 
 public interface IThemeService
 {
-    public bool IsDarkMode { get; set; }
+    event Action? ModeChanged;
 
+    bool IsDarkMode { get; set; }
     void ToggleMode();
 }

@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddSingleton<IViesSharpClient, ViesSharpClient>()
-    .AddSingleton<IThemeService, ThemeService>();
+    .AddScoped<IThemeService, ThemeService>();
 
 // Add services to the container.
 builder.Services

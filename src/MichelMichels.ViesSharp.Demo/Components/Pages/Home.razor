@@ -14,7 +14,7 @@
 
 <PageTitle>ViesSharp | Demo</PageTitle>
 
-<header class="p-4 pb-3 d-flex align-items-center">
+<header class="p-4 pb-3 d-flex align-items-center" data-bs-theme="dark">
     <div class="me-auto">
         <h1 class="m-0 fw-bold lh-1">Michel</h1>
         <h1 class="m-0 fw-bold lh-1">Michels</h1>
@@ -27,10 +27,6 @@
                 <span>Profile</span>
             </div>
         </a>
-
-        <button class="btn btn-outline-secondary" @onclick="@ToggleDarkTheme">
-            <i class="@(themeService.IsDarkMode ? "bi-brightness-high" : "bi-moon-stars" )" />
-        </button>
     </div>
 </header>
 
@@ -102,13 +98,13 @@
 
                 @if(LastResponse is not null)
                 {
-                    <div class="card">
+                    <div class="card @(BackgroundClass) bg-opacity-25">
                         <div class="card-body">
                             <i class="@(LastResponse.IsValid ? "bi-check-circle-fill text-success" : "bi-x-circle-fill text-danger") d-block text-center mb-2" style="font-size: 4rem;"></i>
 
                             @if(LastResponse.IsValid) {
-                                <h3>@LastResponse.Name</h3>
-                                <p>@LastResponse.Address</p>
+                                <h4 class="text-center">@LastResponse.Name</h4>
+                                <p class="text-center">@LastResponse.Address</p>
                             } else {
                                 <h3 class="text-center">This is not a valid VAT number.</h3>
                             }
@@ -222,12 +218,5 @@
     private string ExtractDigits(string value) 
     {
         return string.Join("", value.Where(x => char.IsDigit(x)));
-    }
-
-    public void ToggleDarkTheme()
-    {
-        themeService.ToggleMode();
-        //IsDarkMode = ThemeService.IsDarkMode;        
-        StateHasChanged();
     }
 }
