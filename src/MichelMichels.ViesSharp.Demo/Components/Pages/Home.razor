@@ -49,7 +49,7 @@
 
                     <div class="d-flex flex-column flex-md-row gap-2">
                         <div class="form-floating" style="width: 7rem;">
-                            <select class="form-select" id="country-select" placeholder="Country placeholder" @bind="@SelectedCountryCode">
+                            <select class="form-select" id="country-select" placeholder="Country placeholder" @bind="@SelectedCountryCode" required>
                                 <option disabled value="" selected>...</option>
                                 @foreach (string countryCode in CountryCodes)
                                 {
@@ -60,11 +60,11 @@
                         </div>
 
                         <div class="form-floating flex-grow-1">
-                            <input type="text" class="form-control" id="vatnumber-input" placeholder="VAT no. placeholder" @bind="@VatNumber">
+                            <input type="text" class="form-control" id="vatnumber-input" placeholder="VAT no. placeholder" @bind="@VatNumber" required>
                             <label for="vatnumber-input">VAT no.</label>
                         </div>
 
-                        <button class="btn btn-primary @(string.IsNullOrEmpty(SelectedCountryCode) ? "disabled" : "" )" type="submit">
+                        <button class="btn btn-primary" type="submit">
                             <span class="@(IsLookingUp ? "d-none" : "")">Lookup</span>
                             <div class="spinner-border spinner-border-sm @(!IsLookingUp ? "d-none" : "")" role="status">
                                 <span class="visually-hidden">Looking up...</span>
