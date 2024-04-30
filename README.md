@@ -3,6 +3,7 @@
 
 [![NuGet Version](https://img.shields.io/nuget/v/MichelMichels.ViesSharp)](https://www.nuget.org/packages/MichelMichels.ViesSharp)
 [![.NET](https://github.com/MichelMichels/ViesSharp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/MichelMichels/ViesSharp/actions/workflows/dotnet.yml)
+[![demo](https://img.shields.io/badge/demo-michel.miche.ls/projects/vies-orange)](https://michel.miche.ls/projects/vies)
 
 This projects is a C# wrapper library to [validate VAT numbers with VIES]("https://ec.europa.eu/taxation_customs/vies/#/vat-validation").
 
@@ -49,9 +50,7 @@ This repository contains 2 projects:
 - `MichelMichels.ViesSharp` - Core library
 - `MichelMichels.ViesSharpTests` - Testing library
 
-## Usage
-
-There are only 3 REST calls on this API. You can find for each call example code below.
+There is a demo running on [my website](https://michel.miche.ls/projects/vies) with a Blazor Web App frontend.
 
 ### Check VAT number 
 
