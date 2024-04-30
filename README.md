@@ -5,7 +5,7 @@
 [![.NET](https://github.com/MichelMichels/ViesSharp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/MichelMichels/ViesSharp/actions/workflows/dotnet.yml)
 [![demo](https://img.shields.io/badge/demo-michel.miche.ls/projects/vies-orange)](https://michel.miche.ls/projects/vies)
 
-This projects is a C# wrapper library to [validate VAT numbers with VIES]("https://ec.europa.eu/taxation_customs/vies/#/vat-validation").
+This projects is a C# wrapper library to [validate VAT numbers with VIES](https://ec.europa.eu/taxation_customs/vies/#/vat-validation).
 
 <details>
 <summary>Table of Contents</summary>
@@ -14,11 +14,11 @@ This projects is a C# wrapper library to [validate VAT numbers with VIES]("https
 - [Building](#building)
 - [Installation](#installation)
 - [Getting started](#getting-started)
-- [Usage](#usage)
   - [Check VAT number](#check-vat-number)
   - [Check VAT test service](#check-vat-test-service)
   - [Check status](#check-status)
   - [Exceptions](#exceptions)
+- [Documentation](#documentation)
 - [Credits](#credits)
 
 </details>
@@ -108,6 +108,11 @@ StatusResponse response = await client.CheckStatus();
 
 This library throws `ViesSharpException`s if the HTTP status code is not 200. This `ViesSharpException` has a property `ErrorResponse` with a deserialized error response of the VIES service to indicate what is wrong with the call.
 
+## Documentation
+
+Visit the ['Technical information' page on the VIES site of the European Commission](https://ec.europa.eu/taxation_customs/vies/#/technical-information) for more in-depth documentation.
+
 ## Credits
 
-Written by [Michel Michels](https://github.com/MichelMichels).
+- Written by [Michel Michels](https://github.com/MichelMichels).
+- Thanks to the European Commission for aggregating all this information and creating a handy REST API
