@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MichelMichels.ViesSharp\MichelMichels.ViesSharp.csproj" />
+    <ProjectReference Include="..\..\src\MichelMichels.ViesSharp\MichelMichels.ViesSharp.csproj" />
   </ItemGroup>
 
   <ItemGroup>
