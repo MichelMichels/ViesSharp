@@ -1,12 +1,18 @@
 ﻿using MichelMichels.ViesSharp.Exceptions;
 using MichelMichels.ViesSharp.Models;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MichelMichels.ViesSharp;
 
 public class ViesSharpClient(ViesSharpOptions? options = null) : IViesSharpClient
 {
     private readonly ViesSharpOptions options = options ?? new ViesSharpOptions();
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
+    };
 
     private HttpClient? _httpClient;
 
@@ -15,7 +21,6 @@ public class ViesSharpClient(ViesSharpOptions? options = null) : IViesSharpClien
     /// API docs: Check a Vat Number for a specific country
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
     public async Task<VatNumberResponse> CheckVatNumber(VatNumberRequest body)
     {
         InitializeHttpClient();
@@ -31,7 +36,6 @@ public class ViesSharpClient(ViesSharpOptions? options = null) : IViesSharpClien
     /// API docs: Test the check vat service
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
     public async Task<VatNumberResponse> CheckVatTestService(VatNumberRequest body)
     {
         InitializeHttpClient();
@@ -64,14 +68,16 @@ public class ViesSharpClient(ViesSharpOptions? options = null) : IViesSharpClien
     }
     private static async Task<T> ParseContent<T>(HttpResponseMessage message) where T : class
     {
-        if (message.IsSuccessStatusCode)
+        string json = await message.Content.ReadAsStringAsync();
+
+        try
         {
-            T result = await message.Content.ReadFromJsonAsync<T>() ?? throw new ViesSharpException("Serialized result was null.");
+            T result = JsonSerializer.Deserialize<T>(json) ?? throw new ViesSharpException("Serialized result was null.");
             return result;
         }
-        else
+        catch
         {
-            ErrorResponse? errorResponseMessage = await message.Content.ReadFromJsonAsync<ErrorResponse>();
+            ErrorResponse? errorResponseMessage = JsonSerializer.Deserialize<ErrorResponse>(json);
             if (errorResponseMessage is not null)
             {
                 throw new ViesSharpException(errorResponseMessage);

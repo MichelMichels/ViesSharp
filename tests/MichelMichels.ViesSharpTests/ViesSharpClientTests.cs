@@ -1,4 +1,5 @@
-﻿using MichelMichels.ViesSharp.Models;
+﻿using MichelMichels.ViesSharp.Exceptions;
+using MichelMichels.ViesSharp.Models;
 using System.Diagnostics;
 using System.Text.Json;
 
@@ -8,7 +9,7 @@ namespace MichelMichels.ViesSharp.Tests;
 public class ViesSharpClientTests
 {
     [TestMethod()]
-    public async Task CheckStatus()
+    public async Task Production_CheckStatus_Test()
     {
         // Arrange
         ViesSharpClient client = new();
@@ -23,7 +24,7 @@ public class ViesSharpClientTests
     }
 
     [TestMethod]
-    public async Task CheckVatNumber()
+    public async Task Production_CheckVatNumber_Test()
     {
         // Arrange
         ViesSharpClient client = new();
@@ -47,7 +48,7 @@ public class ViesSharpClientTests
     [TestMethod]
     [DataRow("100", "VALID", true)]
     [DataRow("200", "INVALID", false)]
-    public async Task CheckVatTestService(string vatNumber, string validity, bool isValid)
+    public async Task Production_CheckVatTestService_Test(string vatNumber, string validity, bool isValid)
     {
         // Arrange
         ViesSharpClient client = new();
@@ -65,5 +66,28 @@ public class ViesSharpClientTests
         Assert.AreEqual(isValid, response.IsValid);
 
         Debug.WriteLine(JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true }));
+    }
+
+    [TestMethod]
+    [Ignore] // Ignore this test because it requires a mock service to be running locally.
+    public async Task Mock_CheckVatNumber_ErrorResponse_Test()
+    {
+        // Arrange
+        ViesSharpClient client = new(new ViesSharpOptions
+        {
+            BaseUrl = "https://localhost:7238/"
+        });
+
+        VatNumberRequest request = new()
+        {
+            CountryCode = "BE",
+            VatNumber = "0244142664"
+        };
+
+        // Act
+        ViesSharpException exception = await Assert.ThrowsAsync<ViesSharpException>(() => client.CheckVatNumber(request));
+
+        // Assert
+        Assert.IsNotNull(exception.ErrorResponse);
     }
 }
