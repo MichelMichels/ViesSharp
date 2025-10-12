@@ -10,8 +10,10 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>
-      - Release 1.0.0
-    </PackageReleaseNotes>
+		- Release 1.1.0
+		- Added support for error responses with status code 200
+		- Improved exception handling and error reporting
+	</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/MichelMichels/ViesSharp</RepositoryUrl>
     <PackageProjectUrl>https://github.com/MichelMichels/ViesSharp</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
