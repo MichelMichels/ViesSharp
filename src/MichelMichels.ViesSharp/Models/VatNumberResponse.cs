@@ -4,10 +4,10 @@ namespace MichelMichels.ViesSharp.Models
 {
     public class VatNumberResponse
     {
-        [JsonPropertyName("countryCode")]
+        [JsonPropertyName("countryCode"), JsonRequired]
         public string CountryCode { get; set; } = string.Empty;
 
-        [JsonPropertyName("vatNumber")]
+        [JsonPropertyName("vatNumber"), JsonRequired]
         public string VatNumber { get; set; } = string.Empty;
 
         [JsonPropertyName("requestDate")]
