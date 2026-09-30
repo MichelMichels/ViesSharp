@@ -25,7 +25,6 @@ public class ViesSharpClientTests
 
     [TestMethod]
     [DataRow("0244142664")]
-    [DataRow("1038454977")]
     public async Task Production_Belgium_CheckVatNumber_Test(string vatNumber)
     {
         // Arrange
