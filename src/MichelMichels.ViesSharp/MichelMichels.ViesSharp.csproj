@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -10,9 +10,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>
-		- Release 1.1.0
-		- Added support for error responses with status code 200
-		- Improved exception handling and error reporting
+		- Release 2.0.0
+		- Update to .NET 10		
 	</PackageReleaseNotes>
     <RepositoryUrl>https://github.com/MichelMichels/ViesSharp</RepositoryUrl>
     <PackageProjectUrl>https://github.com/MichelMichels/ViesSharp</PackageProjectUrl>

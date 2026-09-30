@@ -24,14 +24,16 @@ public class ViesSharpClientTests
     }
 
     [TestMethod]
-    public async Task Production_CheckVatNumber_Test()
+    [DataRow("0244142664")]
+    [DataRow("1038454977")]
+    public async Task Production_Belgium_CheckVatNumber_Test(string vatNumber)
     {
         // Arrange
         ViesSharpClient client = new();
         VatNumberRequest request = new()
         {
             CountryCode = "BE",
-            VatNumber = "0244142664"
+            VatNumber = vatNumber
         };
 
         // Act
